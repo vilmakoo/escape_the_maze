@@ -32,18 +32,21 @@ def get_neighbours(node):
 visited = []
 queue = []
 
-def escape(visited, starting_point):
+def escape(visited, starting_point, max_steps):
     visited.append(starting_point)
     queue.append([starting_point])
 
     while queue:
         path = queue.pop(0)
         node = path[-1]
-        print(node)
+
+        if len(path) > max_steps:
+            print("No possible route shorter than given length available")
+            break
+
         if maze[node[0]][node[1]] == "E":
             print(path)
             break
-
 
         for neighbour in get_neighbours(node):
             if neighbour not in visited:
@@ -56,13 +59,10 @@ def escape(visited, starting_point):
 
 if __name__ == "__main__":
     maze = list(map(list, open(sys.argv[1]).read().split("\n")))
-    # print(starting_point())
-    # print(get_neighbours(starting_point()))
-    escape(visited, starting_point())
+    escape(visited, starting_point(), int(sys.argv[2]))
 
 
 
 # TODO:
-# polun pituus (kysy haettu pituus parametrina ja steppien määrä jos mahdollista läpäistä halutun pituuden sisällä)
 # refaktoroi
 # kommentoi
