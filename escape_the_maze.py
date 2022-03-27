@@ -31,6 +31,34 @@ def get_neighbours(node):
     return list(filter(in_maze, neighbours))
 
 
+def print_path(path_found, escape_path):
+    """Print found escape path or a message if a path cannot be found
+    to file 'result.txt'"""
+
+    with open("result.txt", "w") as result_file:
+        if not path_found:
+            result_file.write("No route shorter than given length available for maze '{}'."
+            .format(sys.argv[1]))
+        else:
+            result_file.write("Path of length {} found for maze '{}':\n\n"
+            .format(len(escape_path), sys.argv[1]))
+
+            def node_in_path(node):
+                if node in escape_path:
+                    return True
+                return False
+
+            for i, line in enumerate(maze):
+                for j, char in enumerate(line):
+                    if char == "^":
+                        result_file.write("^") # print starting node
+                    elif node_in_path([i ,j]):
+                        result_file.write(".") # print '.' if node is in escape path
+                    else:
+                        result_file.write(char) # else print node as it is in the original maze
+                result_file.write("\n")
+
+
 def find_path(max_steps):
     """Find a path out of the maze using breadth first search"""
 
@@ -46,12 +74,12 @@ def find_path(max_steps):
         node = path[-1] # node that is going to be examined now
 
         if len(path) > max_steps:
-            print("No route shorter than given length available")
+            print_path(False, [])
             break
 
         if maze[node[0]][node[1]] == "E":
             # exit found
-            print(path)
+            print_path(True, path)
             break
 
         # add neighbours to queue if they're not yet visited
