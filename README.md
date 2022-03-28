@@ -1,4 +1,4 @@
-Python program for escaping a maze.
+Python program for escaping a maze using a breadth-first search algorithm.
 
 Run the program with
 `python escape_the_maze.py <maze> <max_length>`
